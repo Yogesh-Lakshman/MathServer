@@ -42,13 +42,96 @@ Render the result to the HTML template.
 Publish the website in Localhost.
 
 ## PROGRAM:
+views.py
+
+from django.shortcuts import render
+
+def calculate_churn_rate(request):
+    context = {}
+    
+    if request.method == "POST":
+        initial_str = request.POST.get("Initialcust", "0")
+        present_str = request.POST.get("Presentcust", "0")
+        
+        Initialcust = int(initial_str) if initial_str else 0
+        Presentcust = int(present_str) if present_str else 0
+        print("Initial Customer:",Initialcust)
+        print("Present Customer:",Presentcust)
+        
+        if Initialcust > 0:
+            churn_rate = ((Initialcust - Presentcust) / Initialcust) * 100
+        else:
+            churn_rate = 0
+            
+    
+        print("Calculated Churn Rate:", round(churn_rate, 2), "%")
+            
+        context = {
+            "Initialcust": Initialcust,
+            "Presentcust": Presentcust,
+            "churn_rate": round(churn_rate, 2),
+        }
+            
+    return render(request, "myapp/math.html", context)
+
+
+urls.py
+
+"""
+URL configuration for churn_calculator project.
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/6.1/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from django.contrib import admin
+from django.urls import path
+from myapp import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('',views.calculate_churn_rate,name="calculate_churn_rate")
+]
+
+
+math.html
+
+<html>
+    <head>
+        <title>Churn_rate_calculator</title>
+    </head>
+    <body>
+        <h1><b>P.YOGESH LAKSHMAN (26009783)</b></h1>
+        <form method="POST">
+         {%csrf_token%}
+        <label>Initial Customer</label>
+        <input type="number" name="Initialcust" value="{{Initialcust}}"><br><br>
+        <label>Present Customer</label>
+        <input type="number" name="Presentcust" value="{{Presentcust}}"><br><br>
+        <input type="submit" value="Calculate">
+    
+      <h3>Churn Rate: {{ churn_rate }}%</h3>
+
+        </form>
+    </body>
+</html>
+
 
 
 ## OUTPUT - SERVER SIDE:
-
+![alt text](image.png)
 
 ## OUTPUT - WEBPAGE:
-
+![alt text](image-1.png)
 
 ## RESULT:
 The the web page to calculate Churn Rate using server-side scripts is created successfully.

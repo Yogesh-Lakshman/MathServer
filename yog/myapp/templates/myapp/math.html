@@ -1,0 +1,19 @@
+<html>
+    <head>
+        <title>Churn_rate_calculator</title>
+    </head>
+    <body>
+        <h1><b>P.YOGESH LAKSHMAN (26009783)</b></h1>
+        <form method="POST">
+         {%csrf_token%}
+        <label>Initial Customer</label>
+        <input type="number" name="Initialcust" value="{{Initialcust}}"><br><br>
+        <label>Present Customer</label>
+        <input type="number" name="Presentcust" value="{{Presentcust}}"><br><br>
+        <input type="submit" value="Calculate">
+    
+      <h3>Churn Rate: {{ churn_rate }}%</h3>
+
+        </form>
+    </body>
+</html>
